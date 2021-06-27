@@ -180,7 +180,7 @@ reg [7:0] extrom_d;
 	extrom_d (registered) = posedge clk_19968 synced rom_d
 */
 	
-assign rom_a = bprom_setting ? {6'b1111_10, bprom_addr[9:0] } : {3'b000, ad[12:0] };
+assign rom_a = bprom_setting ? {6'b1111_10, bprom_addr[9:0] } : ad ;
 assign rom_oe = 1'b0;
 always @(posedge clk_19968) extrom_d = rom_d;
 assign id = extrom_d;
@@ -672,6 +672,8 @@ assign sx_out_lvds = sx_out[~hcount[3:0]];
 assign sx_sclk = ~vclk;
 assign sx_rclk = (hcount[3:0]==4'b0000);
 
+//ミュージックインベーダーとかの対応
+assign sx4_out = sx[4];
 
 /* extend sound */
 
@@ -1014,9 +1016,8 @@ reg port2x,port4x;
 assign mx = /* 3 */ (a9 & a8) ? mxx :
 				/* 2 */ (a9 & ~a8) ? {DIP7,R,L,FIRE,DIP6,1'b0,DIP5,DIP3} :
 				/* 1 */ (~a9 & a8) ? {1'b0,R,L,FIRE,1'b1,S1,S1,COIN} :	
-
-				/* 0 */ {port7,   R,L,FIRE,3'b111, DIP4} ;
-	//			/* 0 */ {port7,1'b1,L,FIRE,3'b000, 1'b0} ;　//only galaxy wars
+	//			/* 0 */ {port7,   R,L,FIRE,3'b111, DIP4} ;
+				/* 0 */ {port7,1'b1,L,FIRE,3'b000, 1'b0} ; //only galaxy wars
 				
 wire [7:0] mxx;
 
