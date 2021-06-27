@@ -1,7 +1,7 @@
 /* ********************************************
 
 	SPACE INVADERS CORE for FPGA toy
-	by @madov Apr,2021
+	by @madov Jun,2021
 
 
 	趣味目的であり内容や動作は一切保証しません。
@@ -699,10 +699,6 @@ mb14241_and_inp ic3x (
 	
 );
 
-//port 00のときに強制的に1を返す。将来削除予定 
-//assign mx = ( ad[7:0]==8'h00 ) ? 8'h01 : mb14241_o;
-	
-	
 wire sample =  ~nWR & sd4;
 wire[7:0]port;
 
@@ -917,7 +913,7 @@ endmodule
 	サブモジュール
 
 
-	_753675　ロジックIC
+	_75365  　ロジックIC
 	_shifter シフトレジスタ（カスタム版）
 	
 	
