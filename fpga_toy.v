@@ -10,13 +10,7 @@
 	
    ******************************************** */
 
-/* 2021 06 11 new ver */
-/* SX port -> LVDS serial */
-
-
 `default_nettype none
-
-
 
 module fpga_toy (
 
@@ -79,11 +73,10 @@ wire [15:0]sx_out;
 
 //flag for display flipping
 reg inv_t;
-
-always @(posedge SW1)
-	inv_t <= ~inv_t;
-	
 wire inv = inv_t;
+
+always @(posedge SW1) inv_t <= ~inv_t;
+	
 
 wire L = ~_1_LEFT;
 wire R = ~_1_RIGHT;
@@ -92,11 +85,7 @@ wire COIN = ~_1_COIN;
 wire S1 = ~_1_START;
 wire S2 = ~_1_START;
 
-
-
 assign sync_out = compblank;
-//assign sync_out2 = compblank;
-
 
 //All color is set to RED when bomb sound (sx[2])==1
 assign r=sx[2] ? {3{video_out}} : {3{video_out & color[0]}};
@@ -118,42 +107,15 @@ pll0	pll0	(
 	
 );
 
-
-
 wire [7:0] extend_sout;		//extend sound output (8bit PCM)
 									//でも本当は1ビット
-									
-extend_sound s0 (
-	.inclk_0487mhz  (clk_0487mhz),
-	.vc3				 (vcount[3]),
-	.out				 (extend_sout),
-	.sx4				 (sx[4])
-);
-
-sigma_delta_dac dac0 (
-	.DACout		(dsdac),
-	.DACin		(extend_sout),
-	.CLK			(FPGA_CLK_50M)
-
-);
-
-
-
-
-wire clk_9984 = f7_p14;
-
-
 wire [15:0] ad;
-
-
 
 /* ram/rom  unit */
 wire [7:0]cpu_do;
 wire [7:0]ram_din	 = cpu_do ;
-
 wire [7:0]ram_dout_cpu;
 wire [7:0]ram_dout_video;
-
 
 /* ram_address */
 /*
@@ -194,11 +156,8 @@ ram_all	ramall	(
 
 );
 
-
-
 wire [9:0] addr_color = { addr_video[12:8] , addr_video[4:0] };
-wire  [2:0]color;// = 3'b111;
-
+wire [2:0]color;// = 3'b111;
 
 
 /* ********************** 
@@ -256,12 +215,6 @@ bprom bpr0 (
 	.clock	( hcount[2] )
 	
 );
-
-
-
-  
-wire [7:0] id0,id1;
-
 
 /* 4000-43ff check */
 //not used?????? 2021/06/27
@@ -384,37 +337,6 @@ _174 f3 (
 wire video_out;
 wire vo;
 
-
-/*
-_166 f4 (
-	.p14	(ram_dout_v[0]),
-	.p12	(ram_dout_v[1]),
-	.p11	(ram_dout_v[2]),
-	.p10	(ram_dout_v[3]),
-	.p5	(ram_dout_v[4]),
-	.p4	(ram_dout_v[5]),
-	.p3	(ram_dout_v[6]),
-	.p2	(ram_dout_v[7]),
-	
-	//clk
-	.p6	(j3_p5),
-	.p7	(j3_p5),
-	
-	.p9	(1),
-	//shld
-	.p15	(b4_p1),
-	
-	//out
-	.p13	(vo)
-	
-);
-
-*/
-
-
-
-
-
 /* シフトレジスタ */
 /* 本来は　74LS166　でやるべきだが、タイミングがあわないため自作で */
 _shifter shft (
@@ -424,10 +346,10 @@ _shifter shft (
 			.inv	(inv),
 			.out	(vo)
 		);
-		
 
 assign video_out = vo & ~vblank & ~hblank;
 
+//compblank (not used)
 //wire compblank =  ~ ( (j3_p9 & ~j5_p13 & j5_p14) | (d5_p9 & j6_p12 & j6_p11 &  ~j7_p14 ) );
 
 wire f6_p1,f6_p3,f6_p4,f6_p6,f6_p10;
@@ -461,7 +383,6 @@ _74 e5 (
 
 wire e6_p3 = ~ ( f6_p1 & e6_p6 ) ;
 wire e6_p6 = ~ ( e6_p3 & f6_p3 ) ;
-
 
 wire f5_p10,f5_p15,f5_p7,f5_p2;
 _75365 f5 (
@@ -571,13 +492,6 @@ _157 l7 (
 	
 );
 
-	
-	
-	
-//temp, wire declarations
-
-
-
 
 
 /* ********************************************
@@ -641,8 +555,6 @@ _157 l7 (
 // in B = b4_p13;
 wire [7:0]id;
 wire [7:0]mx;
-
-
 																			// B A
 assign cpu_di = ( b4_p13 & b4_p4 ) ? ram_dout_cpu :		// 1 1
 					 ( b4_p13 & ~b4_p4 ) ? 	id :					// 1 0
@@ -709,7 +621,6 @@ wire[7:0]port;
 
 
 	******************************************** */
-	
 
 _42 ic13
 (
@@ -752,8 +663,7 @@ begin
 end
 assign LED = sx[3:0];
 
-assign sx_out[9:0] = { sx[10],sx[9],sx[8],sx[7],sx[6],1'b0/*sx[4]*/,sx[3],sx[2],sx[1],~sx[0] };
-
+assign sx_out[9:0] = { sx[10],sx[9],sx[8],sx[7],sx[6],1'b0,sx[3],sx[2],sx[1],~sx[0] };
 
 //LVDSでの出力用
 //SCLKはVCLK,RCLKはVCLK/16
@@ -761,6 +671,24 @@ assign sx_out[9:0] = { sx[10],sx[9],sx[8],sx[7],sx[6],1'b0/*sx[4]*/,sx[3],sx[2],
 assign sx_out_lvds = sx_out[~hcount[3:0]];
 assign sx_sclk = ~vclk;
 assign sx_rclk = (hcount[3:0]==4'b0000);
+
+
+/* extend sound */
+
+extend_sound s0 (
+	.inclk_0487mhz  (clk_0487mhz),
+	.vc3				 (vcount[3]),
+	.out				 (extend_sout),
+	.sx4				 (sx[4])
+);
+
+sigma_delta_dac dac0 (
+	.DACout		(dsdac),
+	.DACin		(extend_sout),
+	.CLK			(FPGA_CLK_50M)
+
+);
+
 
 
 

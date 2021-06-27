@@ -1,6 +1,6 @@
-/* sigma_delta dac */
 
-
+/* sigma_delta dac	   */
+/* from XILINX XAPP 154 */
 
 module sigma_delta_dac #(parameter MSBI=7, parameter INV=1'b1)
 (
