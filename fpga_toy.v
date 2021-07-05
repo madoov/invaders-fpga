@@ -90,9 +90,9 @@ assign sync_out = compblank;
 
 //All color is set to RED when bomb sound (sx[2])==1
 //brightness: only 220 ohm. ( 470,1k is optional )
-assign r=sx[2] ? {3{video_out}} : { {video_out & color[0]},2'bZZ };
-assign g=sx[2] ? 3'b0 : { {video_out & color[2]},2'bZZ };
-assign b=sx[2] ? 2'b0 : { {video_out & color[1]},1'bZ  };
+assign r=sx[2] ? { video_out , 2'bZZ  }	: { {video_out & color[0]},2'bZZ };
+assign g=sx[2] ? 3'b0 							: { {video_out & color[2]},2'bZZ };
+assign b=sx[2] ? 2'b0 							: { {video_out & color[1]},1'bZ  };
 
 
 /* clock generator (pll) */
@@ -715,7 +715,7 @@ wire dbin,cpusync,inte,vait,hlda,nWR;
 assign nRESET = ~ ( SW2 | bprom_setting );  //1;
 
 assign ready = c5_p5;
-assign int = c5_p9;
+assign cpu_int = c5_p9;
 assign hold = 0;
 
 
