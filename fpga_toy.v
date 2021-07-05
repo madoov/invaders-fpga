@@ -450,7 +450,7 @@ _157 l5 (
 	.p4	(ram_a[0]),
 	.p7	(ram_a[1]),
 	.p9	(ram_a[2]),
-	.p12	(ram_a[3]),
+	.p12	(ram_a[3])
 	
 );
 
@@ -470,7 +470,7 @@ _157 l6 (
 	.p4	(ram_a[4]),
 	.p7	(ram_a[5]),
 	.p9	(ram_a[6]),
-	.p12	(ram_a[7]),
+	.p12	(ram_a[7])
 	
 );
 
@@ -490,7 +490,7 @@ _157 l7 (
 	.p4	(ram_a[8]),
 	.p7	(ram_a[9]),
 	.p9	(ram_a[10]),
-	.p12	(ram_a[11]),
+	.p12	(ram_a[11])
 	
 );
 
@@ -706,7 +706,7 @@ sigma_delta_dac dac0 (
 wire [7:0]cpu_di;
 
 //cpu output port
-wire nRESET,ready,hold,int;
+wire nRESET,ready,hold,cpu_int;
 wire dbin,cpusync,inte,vait,hlda,nWR;
 
 //power up reset、ウオッチドックタイマーは未実装
@@ -726,7 +726,7 @@ T8080se r2 (
 	.CLKEN		(1),
 	.READY		(ready),
 	.HOLD			(hold),
-	.INT			(int),
+	.INT			(cpu_int),
 	.INTE			(inte),
 	.DBIN			(dbin),
 	.SYNC			(cpusync),
@@ -735,7 +735,7 @@ T8080se r2 (
 	.WR_n			(nWR),
 	.A				(ad),
 	.DI			(cpu_di),
-	.DO			(cpu_do),
+	.DO			(cpu_do)
 );
 
 wire sd0,sd1,sd3,sd4,sd6,sd7;
@@ -1117,7 +1117,7 @@ _151	ic12 (
 	.p10	(sh2),
 	.p11	(sh1),
 	
-	.p5	(mxx[0]),
+	.p5	(mxx[0])
 );
 
 _151	ic11 (
@@ -1134,7 +1134,7 @@ _151	ic11 (
 	.p10	(sh2),
 	.p11	(sh1),
 	
-	.p5	(mxx[1]),
+	.p5	(mxx[1])
 );
 
 _151	ic10 (
@@ -1151,7 +1151,7 @@ _151	ic10 (
 	.p10	(sh2),
 	.p11	(sh1),
 	
-	.p5	(mxx[2]),
+	.p5	(mxx[2])
 );
 
 _151	ic9 (
@@ -1168,7 +1168,7 @@ _151	ic9 (
 	.p10	(sh2),
 	.p11	(sh1),
 	
-	.p5	(mxx[3]),
+	.p5	(mxx[3])
 );
 
 
@@ -1186,7 +1186,7 @@ _151	ic41 (
 	.p10	(sh2),
 	.p11	(sh1),
 	
-	.p5	(mxx[4]),
+	.p5	(mxx[4])
 );
 
 _151	ic42 (
@@ -1203,8 +1203,9 @@ _151	ic42 (
 	.p10	(sh2),
 	.p11	(sh1),
 	
-	.p5	(mxx[5]),
+	.p5	(mxx[5])
 );
+
 _151	ic43 (
 	.p4	(dse),
 	.p3	(dsd),
@@ -1219,8 +1220,9 @@ _151	ic43 (
 	.p10	(sh2),
 	.p11	(sh1),
 	
-	.p5	(mxx[6]),
+	.p5	(mxx[6])
 );
+
 _151	ic44 (
 	.p4	(dsf),
 	.p3	(dse),
@@ -1235,7 +1237,7 @@ _151	ic44 (
 	.p10	(sh2),
 	.p11	(sh1),
 	
-	.p5	(mxx[7]),
+	.p5	(mxx[7])
 );
 
 endmodule
