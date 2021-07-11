@@ -1,7 +1,7 @@
 /* ********************************************
 
 	SPACE INVADERS CORE for FPGA toy
-	by @madov Jun,2021
+	by madov Jun,2021
 
 
 	趣味目的であり内容や動作は一切保証しません。
